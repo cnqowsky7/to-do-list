@@ -8,7 +8,7 @@ const List2 = props => (
         {
             props.items.map((item, index) => <li key={index}>
             {item}
-            
+
             <div className='icons'>
                 <button type="button" className="btn btn-default btn-ok" aria-label="Left Align" onClick={() => {props.handleDone(index)}}>
                     <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
@@ -36,14 +36,13 @@ class List extends React.Component {
 
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.handleDelete = this.handleDelete.bind(this);
     }
 
     handleDelete(index) {
-        var el = document.getElementById(index);
-        var el2 = el.parentElement;
-        var el3 = el2.parentElement;
-        el3.remove();
-        console.log(index);
+      let {items} = this.state;
+      items.splice(index, 1);
+      this.setState({...items});
     }
 
     handleDone(index) {
@@ -54,11 +53,11 @@ class List extends React.Component {
         el3.classList.add('green');
         console.log(index);
     }
-  
+
     handleChange = (event) => {
-      this.setState({value: event.target.value});  
+      this.setState({value: event.target.value});
     }
-  
+
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({
@@ -66,7 +65,7 @@ class List extends React.Component {
             items: [...this.state.items, this.state.value]
         });
     }
-    
+
     render(){
 
 
@@ -82,7 +81,7 @@ class List extends React.Component {
                         </label>
                         <button>Dodaj</button>
                     </form>
-                    
+
                     <div className='toDoList'>
                         <List2 items={this.state.items} handleDelete={this.handleDelete} handleDone={this.handleDone} />
                     </div>
