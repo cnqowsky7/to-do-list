@@ -1,16 +1,19 @@
 import React from 'react';
-
+import FlipMove from "react-flip-move";
 import './List.css';
 
 const List2 = props => (
 
     <ul>
-        {
-            props.items.map((item, index) => <li key={index}>
-            {item}
+        <FlipMove duration={150} easing="ease-out">
 
+        {
+            
+            props.items.map((item, index) => <li key={index}>
+            
+            {item}
             <div className='icons'>
-                <button type="button" className="btn btn-default btn-ok" aria-label="Left Align" onClick={() => {props.handleDone(index)}}>
+                <button type="button" className={props.boxClass.join(' ')} aria-label="Left Align" onClick={props.toggle.bind(this)}>
                     <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
                 </button>
 
@@ -23,6 +26,8 @@ const List2 = props => (
 
             </li>)
         }
+
+        </FlipMove>
     </ul>
 );
 
@@ -31,9 +36,11 @@ class List extends React.Component {
       super(props);
       this.state = {
             value: '',
-            items: []
+            items: [],
+            addClass: false
         };
 
+      this.toggle = this.toggle.bind(this);
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
       this.handleDelete = this.handleDelete.bind(this);
@@ -45,13 +52,16 @@ class List extends React.Component {
       this.setState({...items});
     }
 
-    handleDone(index) {
-        var el = document.getElementById(index);
-        var el2 = el.parentElement;
-        var el3 = el2.parentElement;
-        // el3.remove();
-        el3.classList.add('green');
-        console.log(index);
+    toggle() {
+        this.setState({addClass:
+        !this.state.addClass});
+
+
+        // var el = document.getElementById(index);
+        // var el2 = el.parentElement;
+        // var el3 = el2.parentElement;
+        // el3.classList.add('green');
+        // console.log(index);
     }
 
     handleChange = (event) => {
@@ -67,7 +77,10 @@ class List extends React.Component {
     }
 
     render(){
-
+        let boxClass = ["box"];
+        if(this.state.addClass) {
+            boxClass.push('green');
+        }
 
         return(
         <div className='test'>
@@ -82,8 +95,9 @@ class List extends React.Component {
                         <button>Dodaj</button>
                     </form>
 
+                    
                     <div className='toDoList'>
-                        <List2 items={this.state.items} handleDelete={this.handleDelete} handleDone={this.handleDone} />
+                        <List2 items={this.state.items} handleDelete={this.handleDelete} handleDone={this.handleDone} toggle={this.toggle} boxClass={boxClass}/>
                     </div>
                 </div>
             </div>
